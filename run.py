@@ -125,12 +125,30 @@ def main():
     data = get_sales_data()
     sales_data = [int(num) for num in data]
     update_worksheet(sales_data, "sales")
+    
     new_surplus_data = calculate_surplus_data(sales_data)
     update_worksheet(new_surplus_data, "surplus")
+    
     sales_columns = get_last_5_entries_sales()
     stock_data = calculate_stock_data(sales_columns)
     update_worksheet(stock_data, "stock")
 
+    return stock_data
+
 
 print("Welcome to love Sandwiches Data Automation")
-main()
+stock_data = main()
+
+def get_stock_values(data):
+    headings = SHEET.worksheet("stock").row_values(1)
+    
+    dict = {}
+    for x, y in zip (headings, data):
+        dict[x] = y
+
+    print("Make the following number of sandwiches for the next market:\n")
+    
+    return dict
+
+stock_values = get_stock_values(stock_data)
+print(stock_values)
